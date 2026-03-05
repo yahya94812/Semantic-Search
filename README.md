@@ -29,7 +29,7 @@ Each document is split into 256-token overlapping chunks. Every chunk is encoded
 
 ## Demo
 
-**Indexing `sample_notes/`:**
+**Indexing `my_notes/`:**
 
 ```
 $ python index.py ./sample_notes --db test.db
@@ -37,121 +37,58 @@ $ python index.py ./sample_notes --db test.db
 Loading model 'all-MiniLM-L6-v2' …
 Found 9 file(s) to index.
 
-  [OK]   personal/fitness_log.txt            →  3 chunk(s)
-  [OK]   personal/grocery_list.txt           →  1 chunk(s)
-  [OK]   personal/japan_trip_plan.txt        →  2 chunk(s)
-  [OK]   research/climate_science_notes.txt  →  3 chunk(s)
-  [OK]   research/llm_rag_notes.txt          →  3 chunk(s)
-  [OK]   work/berlin_startup_meeting.txt     →  2 chunk(s)
-  [OK]   work/incident_postmortem_nov2023.txt →  4 chunk(s)
-  [OK]   work/interview_alex_novak.txt       →  2 chunk(s)
-  [OK]   work/q2_product_roadmap.txt         →  3 chunk(s)
+Token indices sequence length is longer than the specified maximum sequence length for this model (317 > 256). Running this sequence through the model will result in indexing errors
+  [OK]   berlin_startup_meeting.txt  →  2 chunk(s)
+  [OK]   climate_science_notes.txt  →  3 chunk(s)
+  [OK]   fitness_log.txt  →  3 chunk(s)
+  [OK]   grocery_list.txt  →  2 chunk(s)
+  [OK]   incident_postmortem_nov2023.txt  →  3 chunk(s)
+  [OK]   interview_alex_novak.txt  →  2 chunk(s)
+  [OK]   japan_trip_plan.txt  →  3 chunk(s)
+  [OK]   llm_rag_notes.txt  →  3 chunk(s)
+  [OK]   q2_product_roadmap.txt  →  2 chunk(s)
 
-Saved 23 chunk embeddings → 'test.db' (0.87 MB)
+Saved 23 chunk embeddings → 'embeddings.db' (0.04 MB)
 Unique files indexed: 9
 ```
 
 ---
 
-**Query 1 — topic the document covers verbatim:**
+**Query  — searching semantically:**
 
 ```
-$ python search.py "German startup partnership deal" --db test.db --top 3
+$ python search.py "some time ago i have attained the startup meeting in 
+germani"
 
 ════════════════════════════════════════════════════════════════════════
-  Query : 'German startup partnership deal'
-  Hits  : 3
+  Query : 'startup meeting in germani'
 ════════════════════════════════════════════════════════════════════════
 
-  #1  work/berlin_startup_meeting.txt
+  #1  berlin_startup_meeting.txt
        Avg similarity : 0.7834
        Max similarity : 0.8201
        Chunks matched : 2
 
   ────────────────────────────────────────────────────────────────────────
 
-  #2  work/q2_product_roadmap.txt
+  #2  q2_product_roadmap.txt
        Avg similarity : 0.3012
        Max similarity : 0.3341
        Chunks matched : 3
 
   ────────────────────────────────────────────────────────────────────────
 
-  #3  work/interview_alex_novak.txt
+  #3  interview_alex_novak.txt
        Avg similarity : 0.2187
        Max similarity : 0.2540
        Chunks matched : 2
 
   ────────────────────────────────────────────────────────────────────────
 
-  Best match: work/berlin_startup_meeting.txt  (avg sim = 0.7834)
+  Best match: berlin_startup_meeting.txt  (avg sim = 0.7834)
 ```
 
 The score gap between #1 (0.78) and #2 (0.30) shows a confident match.
-
----
-
-**Query 2 — semantic match with no shared words:**
-
-```
-$ python search.py "slow database query brought down production" --db test.db --top 3 --show-chunks
-
-════════════════════════════════════════════════════════════════════════
-  Query : 'slow database query brought down production'
-  Hits  : 3
-════════════════════════════════════════════════════════════════════════
-
-  #1  work/incident_postmortem_nov2023.txt
-       Avg similarity : 0.6921
-       Max similarity : 0.7455
-       Chunks matched : 4
-
-       Top-3 matching chunks:
-         [chunk 1/4]  sim=0.7455  "Root Cause: A new analytics query deployed in the
-                                   13:45 UTC release queried the orders table without …"
-         [chunk 2/4]  sim=0.7102  "Timeline: 14:02 UTC — Automated monitoring alerts
-                                   fire: API error rate spikes to 94% …"
-         [chunk 3/4]  sim=0.6230  "Action Items: Add index on orders.status column.
-                                   Increase RDS connection pool from 50 to 200 …"
-
-  ────────────────────────────────────────────────────────────────────────
-
-  #2  work/q2_product_roadmap.txt
-       Avg similarity : 0.2543
-       Max similarity : 0.2811
-       Chunks matched : 3
-
-  ────────────────────────────────────────────────────────────────────────
-
-  Best match: work/incident_postmortem_nov2023.txt  (avg sim = 0.6921)
-```
-
-The query contained none of the words in the document title — semantic similarity found it anyway.
-
----
-
-**Query 3 — personal/unrelated topic stays isolated:**
-
-```
-$ python search.py "what to buy at the supermarket" --db test.db --top 3
-
-  #1  personal/grocery_list.txt
-       Avg similarity : 0.6103
-       Max similarity : 0.6103
-       Chunks matched : 1
-
-  #2  personal/japan_trip_plan.txt
-       Avg similarity : 0.2874
-       Max similarity : 0.3012
-       Chunks matched : 2
-
-  #3  personal/fitness_log.txt
-       Avg similarity : 0.2341
-       Max similarity : 0.2601
-       Chunks matched : 3
-
-  Best match: personal/grocery_list.txt  (avg sim = 0.6103)
-```
 
 ---
 
