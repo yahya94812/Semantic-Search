@@ -1,7 +1,9 @@
-Grocery List — Weekend Shopping
-Date: Saturday morning
+# Grocery List — Weekend Shopping
 
-Produce:
+**Date:** Saturday morning
+
+## Produce
+
 - Spinach (1 bag)
 - Cherry tomatoes (punnet)
 - 2 avocados
@@ -12,19 +14,22 @@ Produce:
 - Bananas (bunch)
 - Apples (6, Granny Smith)
 
-Dairy & Eggs:
+## Dairy & Eggs
+
 - Eggs (12, free range)
 - Whole milk (2 litres)
 - Greek yoghurt (500g, plain)
 - Cheddar cheese (block)
 - Butter (unsalted)
 
-Meat & Fish:
+## Meat & Fish
+
 - Chicken thighs (1kg, boneless)
 - Salmon fillets (2 pieces)
 - Bacon (smoked, 200g)
 
-Pantry:
+## Pantry
+
 - Olive oil (extra virgin)
 - Tinned chickpeas (x3)
 - Tinned tomatoes (x4)
@@ -34,16 +39,19 @@ Pantry:
 - Soy sauce
 - Pasta (penne, 500g)
 
-Snacks:
+## Snacks
+
 - Dark chocolate (85%)
 - Mixed nuts
 - Rice cakes
 
-Household:
+## Household
+
 - Dish soap
 - Paper towels
 - Bin bags (medium)
 
-Notes:
-Check if we still have cumin and paprika before buying spices.
-Pick up birthday card for mum while at the shops.
+## Notes
+
+- Check if we still have cumin and paprika before buying spices.
+- Pick up birthday card for mum while at the shops.
